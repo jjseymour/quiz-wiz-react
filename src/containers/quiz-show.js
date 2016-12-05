@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 import { Link } from 'react-router';
 
 class QuizShow extends Component {
-  componentWillMount(){
+  componentDidMount(){
     this.props.fetchQuiz(this.props.params.id)
   }
   constructor(){

@@ -52,9 +52,9 @@ export function fetchCohorts(){
   }
 }
 
-export function filterCohorts(column, flag){
+export function filterElements(element, column, flag){
   return {
-    type: 'FILTER_COHORTS',
+    type: `FILTER_${element}S`,
     payload: column,
     filterFlag: flag
   }
