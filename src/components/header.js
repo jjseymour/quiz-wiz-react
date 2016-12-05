@@ -1,15 +1,14 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
-import { mapStateToProps } from 'redux'
 
-export default const Header = () => {
+const Header = () => {
   return (
     <nav className="navbar navbar-inverse">
       <div className="container-fluid">
         <div className="collapse navbar-collapse">
           <ul className="nav navbar-nav">
-            <li><Link to={'/users/:id'}>My Account</Link></li>
+            <li><Link to={`/users/1`}>My Account</Link></li>
             <li><Link to={'/quizzes'}>Quizzes</Link></li>
           </ul>
         </div>

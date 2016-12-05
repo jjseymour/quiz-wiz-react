@@ -3,34 +3,36 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fetchCohort } from '../actions/index';
 import TableRow from '../components/table-row';
+import Table from '../components/table'
 
 
 class CohortShow extends Component {
   constructor(props){
     super(props)
+    this.cohortDataLoaded = this.cohortDataLoaded.bind(this)
   }
 
-  componentWillMount(){
+  componentDidMount(){
     this.props.fetchCohort(this.props.params.id)
   }
 
-  renderCohortStudents(){
-    return this.props.cohortShow.students.map((student)=>{
-
-    })
+  cohortDataLoaded(){
+    return (!!this.props.cohortShow && !!this.props.cohortShow.students)
   }
 
   render(){
-    return (
-      <div>hi
-      
-      </div>
-    )
+    if (this.cohortDataLoaded()){
+      return (
+          <Table model="student" elems={this.props.cohortShow.students} column_one="first_name" column_two="last_name" column_three="email" />
+      )
+    } else {
+      return (<div>blah blah</div>)
+    }
   }
 }
 
 function mapStateToProps(state) {
-  return{
+  return {
     cohortShow: state.cohortShow
   }
 }

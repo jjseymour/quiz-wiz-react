@@ -29,7 +29,7 @@ function direction (bool){
   return bool ? 1 : -1;
 }
 
-export function sortCohorts(state, column, ascending){
+export function sortElements(state, column, ascending){
   return Object.assign([], state.slice().sort((a, b)=>{
     if (a[column] < b[column]){
       return direction(ascending)

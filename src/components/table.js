@@ -3,7 +3,7 @@ import TableRow from './table-row';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { formatDate } from '../utils/utils';
-import { filterCohorts } from './../actions/index'
+import { filterElements } from './../actions/index'
 import { formatText } from '../utils/utils';
 
 class Table extends Component {
@@ -14,8 +14,8 @@ class Table extends Component {
     this.state = {filterFlag: false}
   }
 
-  renderRows(elements){
-    return elements.map(row =>{
+  renderRows(elems){
+    return elems.map(row =>{
       return (
         <TableRow row={row} key={row.id} model={this.props.model}
           column_one={this.props.column_one} column_two={this.props.column_two} column_three={this.props.column_three}
@@ -26,7 +26,8 @@ class Table extends Component {
 
   handleTableClick(e){
     this.setState({filterFlag: !this.state.filterFlag})
-    this.props.filterCohorts(e.target.id, this.state.filterFlag)
+    let model = this.props.model.toUpperCase()
+    this.props.filterElements(model, e.target.id, this.state.filterFlag)
   }
 
   render(){
@@ -40,7 +41,7 @@ class Table extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.renderRows(this.props.elements)}
+            {this.renderRows(this.props.elems)}
           </tbody>
         </table>
     )
@@ -50,7 +51,7 @@ class Table extends Component {
 
 
 function mapDispatchToProps(dispatch){
-  return bindActionCreators({filterCohorts}, dispatch)
+  return bindActionCreators({filterElements}, dispatch)
 }
 
 

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
 import { fetchCohorts } from '../actions/index';
-import { filterCohorts } from '../actions/index';
+import { filterElements } from '../actions/index';
 import { formatDate } from '../utils/utils'
 import  { browserHistory } from 'react-router'
 import Table from '../components/table';
@@ -24,7 +24,7 @@ class CohortIndex extends Component {
   render(){
     if (!!this.props.cohorts){
       return (
-        <Table model="cohort" elements={this.props.cohorts} column_one="flatiron_named" column_two="student_named" column_three="start_date" />
+        <Table model="cohort" elems={this.props.cohorts} column_one="flatiron_named" column_two="student_named" column_three="start_date" />
       )} else {
         return <div>Hi</div>
       }
@@ -42,7 +42,7 @@ function mapStateToProps(state){
 }
 
 function mapDispatchToProps(dispatch){
-  return bindActionCreators({fetchCohorts, filterCohorts}, dispatch)
+  return bindActionCreators({fetchCohorts, filterElements}, dispatch)
 }
 
 
