@@ -8,8 +8,9 @@ const Header = () => {
       <div className="container-fluid">
         <div className="collapse navbar-collapse">
           <ul className="nav navbar-nav">
-            <li><Link to={`/users/1`}>My Account</Link></li>
+            <li><Link to={`/users/:id`}>My Account</Link></li>
             <li><Link to={'/quizzes'}>Quizzes</Link></li>
+            <li><Link to={'/quizzes/new'}>New Quiz</Link></li>
           </ul>
         </div>
       </div>

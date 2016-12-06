@@ -6,6 +6,7 @@ import NewQuizForm from './components/new-quiz-form';
 import QuizShow from './containers/quiz-show';
 import CohortIndex from './containers/cohort-index';
 import CohortShow from './containers/cohort-show';
+import QuestionShow from './components/question-show';
 
 export default (
   <Route path="/" component={App}>
@@ -15,6 +16,7 @@ export default (
         <IndexRoute component={NewQuizForm} />
       </Route>
       <Route path=":id" component={QuizShow} />
+      <Route path=":id/questions/:id" component={QuestionShow} />
     </Route>
     <Route path="/cohorts">
       <IndexRoute component={CohortIndex} />
