@@ -67,3 +67,26 @@ export function fetchCohort(id){
     payload: req
   }
 }
+
+export function createUserSession(user){
+  const req = axios.post(url + 'login', user)
+  return {
+    type: 'CREATE_USER_SESSION',
+    payload: req
+  }
+}
+
+export function createUser(user){
+  const req = axios.post(url + 'signup', user)
+  return {
+    type: 'CREATE_USER',
+    payload: req
+  }
+}
+
+export function destroySession(e){
+  e.preventDefault()
+    return {
+      type: 'DESTROY_SESSION'
+    }
+}
