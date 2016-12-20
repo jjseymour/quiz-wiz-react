@@ -9,7 +9,7 @@ export default function(state = null, action){
       return action.payload
     case 'ADD_QUESTION':
       const questionObject = state.questions[parseInt(action.payload.id)]
-      const questionInput = action.payload.value
+      const questionInput = action.payload.input
       questionObject.content = questionInput
       return state
     default:

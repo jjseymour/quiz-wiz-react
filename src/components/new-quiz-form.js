@@ -51,7 +51,7 @@ class NewQuizForm extends Component  {
 }
 
 function mapStateToProps(state) {
-  if (!state.quizForm) {
+  if (!state.quizForm || state.quizForm.id) {
     return {
       quizForm: {title: '', description: '', questions: []}
     }

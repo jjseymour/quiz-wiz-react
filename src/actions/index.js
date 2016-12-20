@@ -37,7 +37,6 @@ export function setQuiz(quizForm){
 }
 
 export function addQuestionToQuiz(question){
-  question = question.target
   return {
     type: 'ADD_QUESTION',
     payload: question
