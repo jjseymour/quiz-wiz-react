@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchQuiz } from '../actions/index';
+import { fetchQuiz, startQuiz } from '../actions/index';
 import QuestionIndex from '../components/question-index';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router';
+import { browserHistory } from 'react-router';
 
 class QuizShow extends Component {
   componentDidMount(){
@@ -13,6 +14,7 @@ class QuizShow extends Component {
     super()
     this.state = {questions: null}
     this.showQuestions = this.showQuestions.bind(this)
+    this.handleStartQuiz = this.handleStartQuiz.bind(this)
   }
 
   showQuestions(){
@@ -22,6 +24,12 @@ class QuizShow extends Component {
       )}
     )
     this.setState({questions: questions})
+  }
+
+  handleStartQuiz(e){
+    e.preventDefault()
+    this.props.startQuiz(this.props.quizShow.id, this.refs.startQuiz.value)
+    browserHistory.push(this.refs.startQuiz.value)
   }
   render() {
     if (!this.props.quizShow) {
@@ -38,7 +46,9 @@ class QuizShow extends Component {
 
         <button onClick={this.showQuestions} >View Questions</button>
         <ol>{this.state.questions}</ol>
-        <Link to={`/quizzes/${this.props.quizShow.id}/questions/${this.props.quizShow.questions[0].id}`} >Take Quiz</Link>
+        {/* <Link to={`/quizzes/${this.props.quizShow.id}/questions/${this.props.quizShow.questions[0].id}`} >Take Quiz</Link> */}
+        {/* button with action that creates a new student_quiz */}
+        <button onClick={this.handleStartQuiz} ref="startQuiz" value={`/quizzes/${this.props.quizShow.id}/questions/${this.props.quizShow.questions[0].id}`} >Take Quiz</button>
       </div>
     )
   }
@@ -51,7 +61,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch){
-  return bindActionCreators({ fetchQuiz }, dispatch)
+  return bindActionCreators({ fetchQuiz, startQuiz }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuizShow)

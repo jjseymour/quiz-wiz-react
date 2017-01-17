@@ -11,7 +11,6 @@ class NewQuizForm extends Component  {
   }
 
   handleFormSubmit(){
-    console.log("quizForm", this.props.quizForm);
     const quizForm = {quiz:{title: this.refs.titleInputField.value, description: this.refs.descriptionInputField.value, questions: this.props.quizForm.questions}}
     this.props.actions.postQuiz(quizForm)
   }

@@ -4,6 +4,7 @@ export default function(state = null, action){
   switch (action.type) {
     case 'POST_QUIZ':
       browserHistory.push(`/quizzes/${action.payload.data.id}`)
+      console.log("in POST_QUIZ", action.payload);
       return action.payload.data
     case 'SET_QUIZ':
       return action.payload

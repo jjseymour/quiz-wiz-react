@@ -26,7 +26,6 @@ class QuestionInput extends Component {
   }
 
    updateCode(newCode) {
-       console.log(this.refs.questionContentInputField.props.id);
        let question = {id: this.refs.questionContentInputField.props.id, input: newCode}
        this.setState({options: {lineNumbers: true, mode: this.refs.languageDropDown.value}, code: newCode})
        this.props.addQuestionToQuiz(question)
@@ -78,7 +77,6 @@ class QuestionInput extends Component {
           <div style={{textAlign: 'left'}}>
             <CodeMirror id={this.props.id} value={this.state.code} autoFocus={true} ref="questionContentInputField" onChange={this.updateCode} options={this.state.options}  />
           </div>
-          {/* <textarea type='textArea' id={this.props.id} placeholder="Enter a Question" onChange={this.props.addQuestionToQuiz} /> */}
       </div>
     )
   }

@@ -22,7 +22,6 @@ export function fetchQuizzes(){
 
 export function postQuiz(quizForm){
   const response = axios.post(url + `quizzes`, quizForm)
-
   return{
     type: 'POST_QUIZ',
     payload: response
@@ -88,4 +87,24 @@ export function destroySession(e){
     return {
       type: 'DESTROY_SESSION'
     }
+}
+
+export function addAnswer(userAnswer, quizId, studentQuizId, questionId){
+  console.log("userAnswer", userAnswer);
+  console.log("quizId", quizId);
+  console.log("studentQuizId", studentQuizId);
+  console.log("questionId", questionId);
+  const req = axios.post(url + 'answers', {content: userAnswer, student_quiz_id: studentQuizId, quiz_id: quizId, question_id: questionId})
+  return {
+    type: 'ADD_ANSWERS',
+    payload: req
+  }
+}
+
+export function startQuiz(quizId, redirectUrl){
+  const req = axios.post(url + 'student_quizzes', {quiz_id: quizId, jwt: sessionStorage.jwt})
+  return{
+    type: 'START_QUIZ',
+    payload: req
+  }
 }
