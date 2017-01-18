@@ -9,7 +9,7 @@ class QuizIndex extends Component  {
         <h1>Quizzes</h1>
         <ol>
           {this.props.quizzes.map(function(quiz){
-            return <li> <Link to={`/quizzes/${quiz.id}`}>{quiz.title}</Link></li>})}
+            return <li key={quiz.id}> <Link to={`/quizzes/${quiz.id}`}>{quiz.title}</Link></li>})}
         </ol>
       </div>
     )

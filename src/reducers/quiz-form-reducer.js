@@ -4,12 +4,13 @@ export default function(state = null, action){
   switch (action.type) {
     case 'POST_QUIZ':
       browserHistory.push(`/quizzes/${action.payload.data.id}`)
+      console.log("in POST_QUIZ", action.payload);
       return action.payload.data
     case 'SET_QUIZ':
       return action.payload
     case 'ADD_QUESTION':
       const questionObject = state.questions[parseInt(action.payload.id)]
-      const questionInput = action.payload.value
+      const questionInput = action.payload.input
       questionObject.content = questionInput
       return state
     default:

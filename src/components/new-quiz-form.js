@@ -11,7 +11,6 @@ class NewQuizForm extends Component  {
   }
 
   handleFormSubmit(){
-    console.log("quizForm", this.props.quizForm);
     const quizForm = {quiz:{title: this.refs.titleInputField.value, description: this.refs.descriptionInputField.value, questions: this.props.quizForm.questions}}
     this.props.actions.postQuiz(quizForm)
   }
@@ -51,7 +50,7 @@ class NewQuizForm extends Component  {
 }
 
 function mapStateToProps(state) {
-  if (!state.quizForm) {
+  if (!state.quizForm || state.quizForm.id) {
     return {
       quizForm: {title: '', description: '', questions: []}
     }
