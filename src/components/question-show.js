@@ -31,7 +31,6 @@ class QuestionShow extends Component {
     const quiz = this.props.quiz
     const question = this.props.question
     const quizId = quiz.id
-    console.log("quiz: ", quiz, "quizId: ", quizId)
     const userAnswer = this.refs.userAnswer.value
     this.props.addAnswer(userAnswer, quizId, this.props.studentQuiz.id, question.id)
     const indexOfCurrentQuestion = quiz.questions.indexOf(question)
@@ -57,14 +56,13 @@ class QuestionShow extends Component {
 }
 
 function mapStateToProps(state, ownProps){
-  if (state.quizzes.allQuizzes) {
-    const quiz = state.quizzes.allQuizzes.find((quiz) => quiz.id === parseInt(ownProps.params.id[0]))
+  if (state.quizzes) {
+    const quiz = state.quizzes.find((quiz) => quiz.id === parseInt(ownProps.params.id[0]))
     const question = quiz.questions.find((question) => question.id === parseInt(ownProps.params.id[1]))
-    console.log("mstp state", state);
     return{
       quiz: quiz,
       question: question,
-      studentQuiz: state.quizzes.studentQuiz
+      studentQuiz: state.studentQuiz
     }
   } else {
     return{
