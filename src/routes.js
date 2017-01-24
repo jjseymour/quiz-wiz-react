@@ -9,6 +9,7 @@ import CohortShow from './containers/cohort-show';
 import QuestionShow from './components/question-show';
 import UserLogin from './components/user-login';
 import UserSignUp from './components/user-signup';
+import EndQuiz from './components/end-quiz';
 import auth from './auth/authenticator';
 
 export default (
@@ -21,6 +22,7 @@ export default (
         <IndexRoute component={NewQuizForm} />
       </Route>
       <Route path=":id" component={QuizShow} />
+      <Route path=":id/questions/finish" component={EndQuiz} />
       <Route path=":id/questions/:id" component={QuestionShow} />
     </Route>
     <Route path="cohorts" onEnter={requireAuth}>

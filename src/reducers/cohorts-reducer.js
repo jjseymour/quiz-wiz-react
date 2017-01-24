@@ -1,5 +1,5 @@
 import { sortElements } from '../utils/utils';
-import { formatCohortDates } from '../utils/utils';
+// import { formatCohortDates } from '../utils/utils';
 
 export default function (state = null, action){
   switch (action.type) {

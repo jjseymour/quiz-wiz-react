@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Link, browserHistory } from 'react-router';
-import {formatDate} from '../utils/utils'
+import { browserHistory } from 'react-router';
+import { formatDate } from '../utils/utils'
 
 class TableRow extends Component {
 

@@ -1,7 +1,3 @@
-export function formatDate(date){
-  return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`
-}
-
 var months = {
   0: "January",
   1: "February",
@@ -17,6 +13,9 @@ var months = {
   11: "December"
 }
 
+export function formatDate(date){
+  return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`
+}
 
 export function formatText(text){
   let str = text.split("_").map((word)=>{

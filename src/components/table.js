@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import TableRow from './table-row';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { formatDate } from '../utils/utils';
+// import { formatDate } from '../utils/utils';
 import { filterElements } from './../actions/index'
 import { formatText } from '../utils/utils';
 

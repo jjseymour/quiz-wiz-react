@@ -90,10 +90,6 @@ export function destroySession(e){
 }
 
 export function addAnswer(userAnswer, quizId, studentQuizId, questionId){
-  console.log("userAnswer", userAnswer);
-  console.log("quizId", quizId);
-  console.log("studentQuizId", studentQuizId);
-  console.log("questionId", questionId);
   const req = axios.post(url + 'answers', {content: userAnswer, student_quiz_id: studentQuizId, quiz_id: quizId, question_id: questionId})
   return {
     type: 'ADD_ANSWERS',
