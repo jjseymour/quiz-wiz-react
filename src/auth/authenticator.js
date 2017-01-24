@@ -1,5 +1,5 @@
-import {browserHistory} from 'react-router';
-import {destroySession} from '../actions/index';
+// import {browserHistory} from 'react-router';
+// import {destroySession} from '../actions/index';
 
 class Auth {
   static loggedIn() {

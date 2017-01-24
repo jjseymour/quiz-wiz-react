@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
+// import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
 import { fetchCohorts } from '../actions/index';
 import { filterElements } from '../actions/index';
-import { formatDate } from '../utils/utils'
-import  { browserHistory } from 'react-router'
+// import { formatDate } from '../utils/utils'
+// import  { browserHistory } from 'react-router'
 import Table from '../components/table';
 
 class CohortIndex extends Component {

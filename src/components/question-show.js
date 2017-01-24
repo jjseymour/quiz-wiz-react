@@ -34,7 +34,7 @@ class QuestionShow extends Component {
     const userAnswer = this.refs.userAnswer.value
     this.props.addAnswer(userAnswer, quizId, this.props.studentQuiz.id, question.id)
     const indexOfCurrentQuestion = quiz.questions.indexOf(question)
-    const nextQuestionId = quiz.questions[indexOfCurrentQuestion + 1].id
+    const nextQuestionId = quiz.questions[indexOfCurrentQuestion + 1] && quiz.questions[indexOfCurrentQuestion + 1].id || "finish"
     this.refs.userAnswer.value = ''
     browserHistory.push(`/quizzes/${quiz.id}/questions/${nextQuestionId}`)
   }

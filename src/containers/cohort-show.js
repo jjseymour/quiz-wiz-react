@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fetchCohort } from '../actions/index';
-import TableRow from '../components/table-row';
+// import TableRow from '../components/table-row';
 import Table from '../components/table'
 
 
