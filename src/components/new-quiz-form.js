@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import * as quizFormActions from '../actions/index';
 import { bindActionCreators } from 'redux';
 import QuestionInput from './question-input-form';
+import AnswerInput from './answer-input-form';
 
 class NewQuizForm extends Component  {
   constructor(){
@@ -11,14 +12,14 @@ class NewQuizForm extends Component  {
   }
 
   handleFormSubmit(){
-    const quizForm = {quiz:{title: this.refs.titleInputField.value, description: this.refs.descriptionInputField.value, questions: this.props.quizForm.questions}}
+    const quizForm = {quiz:{title: this.refs.titleInputField.value, description: this.refs.descriptionInputField.value, questions: this.props.quizForm.questions, answers: this.props.quizForm.answers}}
     this.props.actions.postQuiz(quizForm)
   }
 
   appendQuestionInput(e) {
     e.preventDefault();
     const newQuestionInput = {inputValue: `input-${this.props.quizForm.questions.length}`};
-    this.props.actions.setQuiz({ title: this.refs.titleInputField.value, description: this.refs.descriptionInputField.value, questions: this.props.quizForm.questions.concat([newQuestionInput])});
+    this.props.actions.setQuiz({ title: this.refs.titleInputField.value, description: this.refs.descriptionInputField.value, questions: this.props.quizForm.questions.concat([newQuestionInput]), answers: this.props.quizForm.answers.concat([newQuestionInput])});
   }
 
   render(){
@@ -35,7 +36,15 @@ class NewQuizForm extends Component  {
           <input ref="descriptionInputField" placeholder="Enter the Quiz Description" />
 
           <div id="dynamicInput">
-            {this.props.quizForm.questions.map((question, index) => <QuestionInput key={index} inputValue={question.inputValue} id={index} ref="questions" />)}
+            {this.props.quizForm.questions.map((question, index) => {
+                return (
+                  <div key={index}>
+                    <QuestionInput inputValue={question.inputValue} id={index} ref="questions" />
+                    <AnswerInput answers={question.answers} id={index} ref="answers" />
+                  </div>
+                  )
+              })
+            }
           </div>
 
           <button onClick={ (e) => this.appendQuestionInput(e) }>
@@ -50,9 +59,10 @@ class NewQuizForm extends Component  {
 }
 
 function mapStateToProps(state) {
+  console.log("state in new-quiz-form: ", state.quizForm)
   if (!state.quizForm || state.quizForm.id) {
     return {
-      quizForm: {title: '', description: '', questions: []}
+      quizForm: {title: '', description: '', questions: [], answers: []}
     }
   } else {
     return {
