@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { addQuestionToQuiz } from '../actions/index';
+import { addAnswersToQuestion } from '../actions/index';
 import { bindActionCreators } from 'redux';
+
+import AnswerInput from './answer-input-form';
 
 import CodeMirror from 'react-codemirror'
 import 'codemirror/mode/xml/xml'
@@ -20,15 +23,21 @@ import 'codemirror/lib/codemirror.css'
 class QuestionInput extends Component {
   constructor(){
     super()
-    this.state = {options: {lineNumbers: true, mode: 'css'}, code: 'div {\n\tposition: relative;\n\tdisplay: block;\n}'}
+    this.state = {options: {lineNumbers: true, mode: 'css'}, code: 'div {\n\tposition: relative;\n\tdisplay: block;\n}', possible_answers_attributes: []}
     this.updateCode = this.updateCode.bind(this)
     this.handleDropDownChange = this.handleDropDownChange.bind(this)
   }
 
    updateCode(newCode) {
        let question = {id: this.refs.questionContentInputField.props.id, input: newCode}
-       this.setState({options: {lineNumbers: true, mode: this.refs.languageDropDown.value}, code: newCode})
+       this.setState({options: {lineNumbers: true, mode: this.refs.languageDropDown.value}, code: newCode, possible_answers_attributes: this.props.possible_answers_attributes})
        this.props.addQuestionToQuiz(question)
+   }
+
+   appendAnswerInput(e) {
+    e.preventDefault();
+    const newAnswerInput = {inputValue: `answerInput-${this.props.possible_answers_attributes.length}`};
+    this.props.addAnswersToQuestion({ id: this.props.id, possible_answers_attributes: this.props.possible_answers_attributes.concat([newAnswerInput])}) 
    }
 
    handleDropDownChange(e) {
@@ -55,7 +64,6 @@ class QuestionInput extends Component {
    }
 
   render() {
-
     return(
       <div>
         <h3>
@@ -76,20 +84,36 @@ class QuestionInput extends Component {
           </select>
           <div style={{textAlign: 'left'}}>
             <CodeMirror id={this.props.id} value={this.state.code} autoFocus={true} ref="questionContentInputField" onChange={this.updateCode} options={this.state.options}  />
+
+           {this.props.possible_answers_attributes.map((answer, index) => {
+             return (<AnswerInput key={index} inputValue={answer.inputValue} id={index} questionId={this.props.id} ref="answers" />)
+              })
+            }
           </div>
+          <button onClick={ (e) => this.appendAnswerInput(e) }>
+            Add an Answer
+          </button>
       </div>
     )
   }
 }
 
 function mapStateToProps(state, ownProps) {
-  return {
-    id: ownProps.id
+  if (!ownProps.answers) {
+    return {
+      possible_answers_attributes: [],
+      id: ownProps.id
+    }
+  }else {
+    return {
+      possible_answers_attributes: ownProps.answers,
+      id: ownProps.id
+    }
   }
 }
 
 function mapDispatchToProps(dispatch){
-  return bindActionCreators({ addQuestionToQuiz }, dispatch)
+  return bindActionCreators({ addQuestionToQuiz, addAnswersToQuestion }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuestionInput);

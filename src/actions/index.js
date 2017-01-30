@@ -35,10 +35,24 @@ export function setQuiz(quizForm){
   }
 }
 
+export function addAnswersToQuestion(questionForm){
+  return {
+    type: 'ADD_ANSWERS_INPUT',
+    payload: questionForm
+  }
+}
+
 export function addQuestionToQuiz(question){
   return {
     type: 'ADD_QUESTION',
     payload: question
+  }
+}
+
+export function addAnswerToQuiz(answer){
+  return {
+    type: 'ADD_ANSWER',
+    payload: answer
   }
 }
 

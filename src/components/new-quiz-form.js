@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import * as quizFormActions from '../actions/index';
 import { bindActionCreators } from 'redux';
 import QuestionInput from './question-input-form';
-import AnswerInput from './answer-input-form';
 
 class NewQuizForm extends Component  {
   constructor(){
@@ -12,14 +11,14 @@ class NewQuizForm extends Component  {
   }
 
   handleFormSubmit(){
-    const quizForm = {quiz:{title: this.refs.titleInputField.value, description: this.refs.descriptionInputField.value, questions: this.props.quizForm.questions, answers: this.props.quizForm.answers}}
+    const quizForm = {quiz:{title: this.refs.titleInputField.value, description: this.refs.descriptionInputField.value, questions: this.props.quizForm.questions}}
     this.props.actions.postQuiz(quizForm)
   }
 
   appendQuestionInput(e) {
     e.preventDefault();
     const newQuestionInput = {inputValue: `input-${this.props.quizForm.questions.length}`};
-    this.props.actions.setQuiz({ title: this.refs.titleInputField.value, description: this.refs.descriptionInputField.value, questions: this.props.quizForm.questions.concat([newQuestionInput]), answers: this.props.quizForm.answers.concat([newQuestionInput])});
+    this.props.actions.setQuiz({ title: this.refs.titleInputField.value, description: this.refs.descriptionInputField.value, questions: this.props.quizForm.questions.concat([newQuestionInput])});
   }
 
   render(){
@@ -39,8 +38,7 @@ class NewQuizForm extends Component  {
             {this.props.quizForm.questions.map((question, index) => {
                 return (
                   <div key={index}>
-                    <QuestionInput inputValue={question.inputValue} id={index} ref="questions" />
-                    <AnswerInput answers={question.answers} id={index} ref="answers" />
+                    <QuestionInput answers={question.possible_answers_attributes} inputValue={question.inputValue} id={index} ref="questions" />
                   </div>
                   )
               })
@@ -59,10 +57,9 @@ class NewQuizForm extends Component  {
 }
 
 function mapStateToProps(state) {
-  console.log("state in new-quiz-form: ", state.quizForm)
   if (!state.quizForm || state.quizForm.id) {
     return {
-      quizForm: {title: '', description: '', questions: [], answers: []}
+      quizForm: {title: '', description: '', questions: [], possible_answers_attributes: []}
     }
   } else {
     return {

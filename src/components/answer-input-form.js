@@ -1,10 +1,24 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { addAnswerToQuiz } from '../actions/index';
+import { bindActionCreators } from 'redux';
 
 class NewAnswerForm extends Component {
+  constructor(){
+    super()
+    this.state = {code: ''}
+    this.updateAnswers = this.updateAnswers.bind(this)
+  }
+
+  updateAnswers(newCode) {
+    let answer = {questionId: this.props.questionId, id: this.refs.answerContentInputField.id, input: newCode.target.value}
+    this.setState({code: newCode.target.value})
+    this.props.addAnswerToQuiz(answer)
+  }
+
   render() {
     return (
-      <div style={{textAlign: 'right'}}>
+      <div >
         <h3>
           Answer {this.props.id + 1}:
         </h3>
@@ -15,7 +29,7 @@ class NewAnswerForm extends Component {
             <option value="multipleChoice">Multiple Choice</option>
           </select>
           <div>
-            <input />
+            <input id={this.props.id} ref="answerContentInputField" onChange={this.updateAnswers}/>
           </div>
       </div>
     )
@@ -23,11 +37,14 @@ class NewAnswerForm extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
-  console.log("state: ", state)
-  console.log("ownProps: ", ownProps)
   return {
-    id: ownProps.id
+    id: ownProps.id,
+    questionId: ownProps.questionId
   }
 }
 
-export default connect(mapStateToProps)(NewAnswerForm);
+function mapDispatchToProps(dispatch){
+  return bindActionCreators({ addAnswerToQuiz }, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(NewAnswerForm);
