@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {browserHistory} from 'react-router';
 
 export const url = 'http://localhost:3000/';
 
@@ -35,6 +36,7 @@ function postNewQuiz(data) {
     type: 'POST_QUIZ',
     payload: data 
   }
+  browserHistory.push(`/quizzes/${data.id}`)
 }
 
 function fetchAllCohorts(data) {

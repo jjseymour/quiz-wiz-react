@@ -1,5 +1,3 @@
-import {browserHistory} from 'react-router';
-
 export default function(state = null, action){
   switch (action.type) {
     case 'SET_QUIZ':
@@ -20,7 +18,6 @@ export default function(state = null, action){
       newState.questions[action.payload.id].possible_answers_attributes = action.payload.possible_answers_attributes
       return newState
     case 'POST_QUIZ':
-      browserHistory.push(`/quizzes/${action.payload.data.id}`)
       return action.payload.data
     default:
       return state
