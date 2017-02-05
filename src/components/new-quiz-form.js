@@ -35,7 +35,14 @@ class NewQuizForm extends Component  {
           <input ref="descriptionInputField" placeholder="Enter the Quiz Description" />
 
           <div id="dynamicInput">
-            {this.props.quizForm.questions.map((question, index) => <QuestionInput key={index} inputValue={question.inputValue} id={index} ref="questions" />)}
+            {this.props.quizForm.questions.map((question, index) => {
+                return (
+                  <div key={index}>
+                    <QuestionInput answers={question.possible_answers_attributes} inputValue={question.inputValue} id={index} ref="questions" />
+                  </div>
+                  )
+              })
+            }
           </div>
 
           <button onClick={ (e) => this.appendQuestionInput(e) }>
@@ -52,7 +59,7 @@ class NewQuizForm extends Component  {
 function mapStateToProps(state) {
   if (!state.quizForm || state.quizForm.id) {
     return {
-      quizForm: {title: '', description: '', questions: []}
+      quizForm: {title: '', description: '', questions: [], possible_answers_attributes: []}
     }
   } else {
     return {

@@ -58,14 +58,22 @@ class QuestionShow extends Component {
 function mapStateToProps(state, ownProps){
   if (state.quizzes) {
     const quiz = state.quizzes.find((quiz) => quiz.id === parseInt(ownProps.params.id[0]))
-    const question = quiz.questions.find((question) => question.id === parseInt(ownProps.params.id[1]))
-    return{
-      quiz: quiz,
-      question: question,
-      studentQuiz: state.studentQuiz
+    if (quiz) {
+      const question = quiz.questions.find((question) => question.id === parseInt(ownProps.params.id[1]))
+      return {
+        quiz: quiz,
+        question: question,
+        studentQuiz: state.studentQuiz
+      }
+    } else {
+      return {
+        quiz: quiz,
+        question: "pending",
+        studentQuiz: state.studentQuiz
+      }
     }
   } else {
-    return{
+    return {
       question: ''
     }
   }

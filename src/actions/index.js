@@ -1,30 +1,98 @@
 import axios from 'axios';
+import {browserHistory} from 'react-router';
 
 export const url = 'http://localhost:3000/';
 
-export function fetchQuiz(quizId){
-  const request = axios.get(url + `quizzes/${quizId}`)
+function getAllQuizzes(data){
+  return {
+    type: 'FETCH_QUIZZES',
+    payload: data 
+  }
+}
 
+function getOneQuiz(data) {
   return {
     type: 'FETCH_QUIZ',
-    payload: request
+    payload: data
+  }
+}
+
+function startStudentQuiz(data) {
+  return{
+    type: 'START_QUIZ',
+    payload: data
+  }
+}
+
+function addAnswerToStudentQuiz(data) {
+  return {
+    type: 'ADD_ANSWERS',
+    payload: data
+  }
+}
+
+function postNewQuiz(data) {
+  return{
+    type: 'POST_QUIZ',
+    payload: data 
+  }
+  browserHistory.push(`/quizzes/${data.id}`)
+}
+
+function fetchAllCohorts(data) {
+  return {
+    type: 'FETCH_COHORTS',
+    payload: data 
+  }
+}
+
+function fetchOneCohort(data) {
+  return {
+    type: 'FETCH_COHORT',
+    payload: data
+  }
+}
+
+function createOneUserSession(data) {
+  return {
+    type: 'CREATE_USER_SESSION',
+    payload: data
+  }
+}
+
+function createOneUser(data) {
+  return {
+    type: 'CREATE_USER',
+    payload: data
+  }
+}
+
+export function fetchQuiz(quizId){
+  return (dispatch) => {
+    axios.get(url + `quizzes/${quizId}`).then((
+      data => dispatch(getOneQuiz(data)),
+      error => dispatch(getOneQuiz(error))
+    ))
   }
 }
 
 export function fetchQuizzes(){
-  const request = axios.get(url + `quizzes`)
-
-  return {
-    type: 'FETCH_QUIZZES',
-    payload: request
+  return (dispatch) => {
+    axios.get(url + `quizzes`).then((
+      data => dispatch(getAllQuizzes(data)),
+      error => dispatch(getAllQuizzes(error))
+    ))
   }
 }
 
 export function postQuiz(quizForm){
-  const response = axios.post(url + `quizzes`, quizForm)
-  return{
-    type: 'POST_QUIZ',
-    payload: response
+  return (dispatch) => {
+    axios.post(url + `quizzes`, quizForm).then((
+      data => dispatch(postNewQuiz(data)).then((
+        () => dispatch(fetchQuizzes())
+      )),
+      error => dispatch(postNewQuiz(error))
+    )) 
   }
 }
 
@@ -35,6 +103,13 @@ export function setQuiz(quizForm){
   }
 }
 
+export function addAnswersToQuestion(questionForm){
+  return {
+    type: 'ADD_ANSWERS_INPUT',
+    payload: questionForm
+  }
+}
+
 export function addQuestionToQuiz(question){
   return {
     type: 'ADD_QUESTION',
@@ -42,11 +117,19 @@ export function addQuestionToQuiz(question){
   }
 }
 
-export function fetchCohorts(){
-  const response = axios.get(url + 'cohorts')
+export function addAnswerToQuiz(answer){
   return {
-    type: 'FETCH_COHORTS',
-    payload: response
+    type: 'ADD_ANSWER',
+    payload: answer
+  }
+}
+
+export function fetchCohorts(){
+  return (dispatch) => {
+    axios.get(url + 'cohorts').then((
+      data => dispatch(fetchAllCohorts(data)),
+      error => dispatch(fetchAllCohorts(error))
+    ))
   }
 }
 
@@ -59,26 +142,29 @@ export function filterElements(element, column, flag){
 }
 
 export function fetchCohort(id){
-  const req = axios.get(url + `cohorts/${id}`)
-  return {
-    type: 'FETCH_COHORT',
-    payload: req
+  return (dispatch) => {
+    axios.get(url + `cohorts/${id}`).then((
+      data => dispatch(fetchOneCohort(data)),
+      error => dispatch(fetchOneCohort(error))
+    ))
   }
 }
 
 export function createUserSession(user){
-  const req = axios.post(url + 'login', user)
-  return {
-    type: 'CREATE_USER_SESSION',
-    payload: req
+  return (dispatch) => {
+    axios.post(url + 'login', user).then((
+      data => dispatch(createOneUserSession(data)),
+      error => dispatch(createOneUserSession(error))
+    ))
   }
 }
 
 export function createUser(user){
-  const req = axios.post(url + 'signup', user)
-  return {
-    type: 'CREATE_USER',
-    payload: req
+  return (dispatch) => {
+    axios.post(url + 'signup', user).then((
+      data => dispatch(createOneUser(data)),
+      error => dispatch(createOneUser(error))
+    ))
   }
 }
 
@@ -90,17 +176,19 @@ export function destroySession(e){
 }
 
 export function addAnswer(userAnswer, quizId, studentQuizId, questionId){
-  const req = axios.post(url + 'answers', {content: userAnswer, student_quiz_id: studentQuizId, quiz_id: quizId, question_id: questionId})
-  return {
-    type: 'ADD_ANSWERS',
-    payload: req
+  return (dispatch) => {
+    axios.post(url + 'answers', {content: userAnswer, student_quiz_id: studentQuizId, quiz_id: quizId, question_id: questionId}).then((
+      data => dispatch(addAnswerToStudentQuiz(data)),
+      error => dispatch(addAnswerToStudentQuiz(error))
+    ))
   }
 }
 
 export function startQuiz(quizId, redirectUrl){
-  const req = axios.post(url + 'student_quizzes', {quiz_id: quizId, jwt: sessionStorage.jwt})
-  return{
-    type: 'START_QUIZ',
-    payload: req
+  return (dispatch) => {
+    axios.post(url + 'student_quizzes', {quiz_id: quizId, jwt: sessionStorage.jwt}).then((
+      data => dispatch(startStudentQuiz(data)),
+      error => dispatch(startStudentQuiz(error))
+    ))
   }
 }
