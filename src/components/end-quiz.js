@@ -4,9 +4,13 @@ import { connect } from 'react-redux';
 class EndQuiz extends Component {
 
   handleStudentAnswerShow(){
+    if (this.props.studentAnswers){
     return (this.props.studentAnswers.map((answer)=>{
       return(<li key={answer.id}>{answer.content}</li>)
     }))
+    } else {
+      return <div>Loading...</div>
+    }
   }
 
   render() {
@@ -23,10 +27,10 @@ class EndQuiz extends Component {
 function mapStateToProps(state, myProps) {
  let quiz = state.quizzes.find((indivQuiz) => state.studentQuiz.quiz_id === indivQuiz.id)
  let studentAnswers = state.studentQuiz.studentAnswers
- return {
-  quiz,
-  studentAnswers
- }
+  return {
+    quiz,
+    studentAnswers
+  }
 }
 
 export default connect(mapStateToProps)(EndQuiz)
