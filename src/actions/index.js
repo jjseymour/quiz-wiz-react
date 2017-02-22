@@ -32,11 +32,11 @@ function addAnswerToStudentQuiz(data) {
 }
 
 function postNewQuiz(data) {
+  browserHistory.push(`/quizzes/${data.data.id}`)
   return{
     type: 'POST_QUIZ',
     payload: data 
   }
-  browserHistory.push(`/quizzes/${data.id}`)
 }
 
 function fetchAllCohorts(data) {
@@ -190,5 +190,12 @@ export function startQuiz(quizId, redirectUrl){
       data => dispatch(startStudentQuiz(data)),
       error => dispatch(startStudentQuiz(error))
     ))
+  }
+}
+
+export function changeQuestionAttributes(payload){
+  return {
+    type: 'CHANGE_QUESTION_ATTRIBUTES',
+    payload: payload
   }
 }

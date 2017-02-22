@@ -11,14 +11,14 @@ class NewQuizForm extends Component  {
   }
 
   handleFormSubmit(){
-    const quizForm = {quiz:{title: this.refs.titleInputField.value, description: this.refs.descriptionInputField.value, questions: this.props.quizForm.questions}}
+    const quizForm = {quiz:{title: this.refs.titleInputField.value, description: this.refs.descriptionInputField.value, questions_attributes: this.props.quizForm.questions_attributes}}
     this.props.actions.postQuiz(quizForm)
   }
 
   appendQuestionInput(e) {
     e.preventDefault();
-    const newQuestionInput = {inputValue: `input-${this.props.quizForm.questions.length}`};
-    this.props.actions.setQuiz({ title: this.refs.titleInputField.value, description: this.refs.descriptionInputField.value, questions: this.props.quizForm.questions.concat([newQuestionInput])});
+    const newQuestionInput = {inputValue: `input-${this.props.quizForm.questions_attributes.length}`, content: 'div {\n\tposition: relative;\n\tdisplay: block;\n}'};
+    this.props.actions.setQuiz({ title: this.refs.titleInputField.value, description: this.refs.descriptionInputField.value, questions_attributes: this.props.quizForm.questions_attributes.concat([newQuestionInput])});
   }
 
   render(){
@@ -35,7 +35,7 @@ class NewQuizForm extends Component  {
           <input ref="descriptionInputField" placeholder="Enter the Quiz Description" />
 
           <div id="dynamicInput">
-            {this.props.quizForm.questions.map((question, index) => {
+            {this.props.quizForm.questions_attributes.map((question, index) => {
                 return (
                   <div key={index}>
                     <QuestionInput answers={question.possible_answers_attributes} inputValue={question.inputValue} id={index} ref="questions" />
@@ -59,7 +59,7 @@ class NewQuizForm extends Component  {
 function mapStateToProps(state) {
   if (!state.quizForm || state.quizForm.id) {
     return {
-      quizForm: {title: '', description: '', questions: [], possible_answers_attributes: []}
+      quizForm: {title: '', description: '', questions_attributes: [], possible_answers_attributes: []}
     }
   } else {
     return {
