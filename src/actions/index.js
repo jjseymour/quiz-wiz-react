@@ -32,11 +32,11 @@ function addAnswerToStudentQuiz(data) {
 }
 
 function postNewQuiz(data) {
+  browserHistory.push(`/quizzes/${data.data.id}`)
   return{
     type: 'POST_QUIZ',
     payload: data 
   }
-  browserHistory.push(`/quizzes/${data.id}`)
 }
 
 function fetchAllCohorts(data) {

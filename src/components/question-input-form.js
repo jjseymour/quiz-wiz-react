@@ -36,7 +36,7 @@ class QuestionInput extends Component {
 
    appendAnswerInput(e) {
     e.preventDefault();
-    const newAnswerInput = {inputValue: `answerInput-${this.props.possible_answers_attributes.length}`};
+    const newAnswerInput = {inputValue: `answerInput-${this.props.possible_answers_attributes.length}`, answer_type: "shortAnswer"};
     this.props.addAnswersToQuestion({ id: this.props.id, possible_answers_attributes: this.props.possible_answers_attributes.concat([newAnswerInput])}) 
    }
 

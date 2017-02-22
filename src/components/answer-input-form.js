@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { addAnswerToQuiz } from '../actions/index';
 import { bindActionCreators } from 'redux';
+import RadioButton from '../components/radio_button';
 
 import CodeMirror from 'react-codemirror'
 import 'codemirror/mode/xml/xml'
@@ -20,21 +21,48 @@ import 'codemirror/lib/codemirror.css'
 class NewAnswerForm extends Component {
   constructor(){
     super()
-    this.state = {options: {lineNumbers: true, mode: 'css'}, code: 'div {\n\tposition: relative;\n\tdisplay: block;\n}', answerType: "shortAnswer"}
+    this.state = {options: {lineNumbers: true, mode: 'css'}, code: 'div {\n\tposition: relative;\n\tdisplay: block;\n}', content: 'option1', answer_type: "short_answer"}
     this.updateAnswers = this.updateAnswers.bind(this)
     this.handleDropDownChange = this.handleDropDownChange.bind(this)
     this.handleCodeMirrorDropDownChange = this.handleCodeMirrorDropDownChange.bind(this)
+    this.updateRadioAnswer = this.updateRadioAnswer.bind(this)
+    this.handleRadioButtonAnswerChange = this.handleRadioButtonAnswerChange.bind(this)
   }
 
   updateAnswers(newCode) {
-    let answer = {questionId: this.props.questionId, id: this.refs.answerContentInputField.id, input: newCode.target.value}
-    this.setState({code: newCode.target.value})
+    let answer;
+    if (this.state.answer_type === "short_answer") {
+      answer = {questionId: this.props.questionId, answer_type: this.state.answer_type, id: this.refs.answerContentInputField.id, short_answer: newCode.target.value}
+    } else if (this.state.answer_type === "long_answer") {
+      answer = {questionId: this.props.questionId, answer_type: this.state.answer_type, id: this.refs.answerContentInputField.id, long_answer: newCode.target.value}
+    }
     this.props.addAnswerToQuiz(answer)
+    this.setState({code: newCode.target.value})
+  }
+
+  updateRadioAnswer(newCode) {
+    let answer;
+    if (this.state.answer_type === "multiple_choice_short") {
+      answer = {questionId: this.props.questionId, answer_type: this.state.answer_type, content: this.state.content, id: this.refs.answerContentInputField.props.id, multiple_choice_short: newCode}
+    } else if (this.state.answer_type === "multiple_choice_long") {
+      answer = {questionId: this.props.questionId, answer_type: this.state.answer_type, content: this.state.content, id: this.refs.answerContentInputField.props.id, multiple_choice_long: newCode}
+    } else if (this.state.answer_type === "code") {
+      answer = {questionId: this.props.questionId, answer_type: this.state.answer_type, id: this.refs.answerCodeMirrorContentInputField.props.id, code: newCode}
+    }
+
+    this.props.addAnswerToQuiz(answer)
+    this.setState({code: newCode})
+  }
+
+  handleRadioButtonAnswerChange(e) {
+    let button = e.target.value
+    this.setState({...this.state, content: button})
   }
 
   handleDropDownChange(e){
     e.preventDefault()
-    this.setState({...this.state, answerType: this.refs.answerType.value})
+    this.setState({...this.state, answer_type: this.refs.answer_type.value})
+    // this.props.changeAnswerType()
   }
 
    handleCodeMirrorDropDownChange(e) {
@@ -61,9 +89,9 @@ class NewAnswerForm extends Component {
    }
 
   handleInputType() {
-    if (this.state.answerType === "shortAnswer"){
+    if (this.state.answer_type === "short_answer"){
       return <input id={this.props.id} ref="answerContentInputField" onChange={this.updateAnswers}/>
-    } else if (this.state.answerType === "code"){
+    } else if (this.state.answer_type === "code"){
       return (
         <div>
           <select defaultValue="css" ref="languageDropDown" onChange={this.handleCodeMirrorDropDownChange}>
@@ -79,15 +107,19 @@ class NewAnswerForm extends Component {
             <option value="swift">Swift</option>
             <option value="xml">XML</option>
           </select>
-          <CodeMirror id={this.props.id} value={this.state.code} autoFocus={true} ref="answerCodeMirrorContentInputField" onChange={this.updateCode} options={this.state.options}  />
+          <CodeMirror id={this.props.id} value={this.state.code} autoFocus={true} ref="answerCodeMirrorContentInputField" onChange={this.updateRadioAnswer} options={this.state.options}  />
         </div>
       )
-    } else if (this.state.answerType === "longAnswer") {
+    } else if (this.state.answer_type === "long_answer") {
       return <textarea id={this.props.id} ref="answerContentInputField" onChange={this.updateAnswers} />
-    } else if (this.state.answerType === "multipleChoiceLongAnswers") {
-      return <input id={this.props.id} type="radio" value="" ref="answerContentInputField" />
-    } else if (this.state.answerType === "multipleChoiceShortAnswers") {
-      return <input id={this.props.id} type="radio" value="" ref="answerContentInputField" />
+    } else if (this.state.answer_type === "multiple_choice_long") {
+      return (
+        <RadioButton id={this.props.id} ref="answerContentInputField" updateRadioAnswerChange={this.handleRadioButtonAnswerChange} content={this.state.content} type="textarea" updateAnswer={this.updateRadioAnswer} />
+      )
+    } else if (this.state.answer_type === "multiple_choice_short") {
+      return (
+        <RadioButton id={this.props.id} ref="answerContentInputField" updateRadioAnswerChange={this.handleRadioButtonAnswerChange} content={this.state.content} type="input" updateAnswer={this.updateRadioAnswer} />
+      )
     }
   }
 
@@ -97,12 +129,12 @@ class NewAnswerForm extends Component {
         <h3>
           Answer {this.props.id + 1}:
         </h3>
-          <select defaultValue="shortAnswer" ref="answerType" onChange={this.handleDropDownChange}>
+          <select defaultValue="short_answer" ref="answer_type" onChange={this.handleDropDownChange}>
             <option value="code">Code</option>
-            <option value="shortAnswer">Short Answer</option>
-            <option value="longAnswer">Long Answer</option>
-            <option value="multipleChoiceLongAnswers">Multiple Choice Long Answers</option>
-            <option value="multipleChoiceShortAnswers">Multiple Choice Short Answers</option>
+            <option value="short_answer">Short Answer</option>
+            <option value="long_answer">Long Answer</option>
+            <option value="multiple_choice_long">Multiple Choice Long Answers</option>
+            <option value="multiple_choice_short">Multiple Choice Short Answers</option>
           </select>
           <div>
             {this.handleInputType()}
