@@ -192,3 +192,10 @@ export function startQuiz(quizId, redirectUrl){
     ))
   }
 }
+
+export function changeQuestionAttributes(payload){
+  return {
+    type: 'CHANGE_QUESTION_ATTRIBUTES',
+    payload: payload
+  }
+}

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { addQuestionToQuiz } from '../actions/index';
+import { addQuestionToQuiz, changeQuestionAttributes } from '../actions/index';
 import { addAnswersToQuestion } from '../actions/index';
 import { bindActionCreators } from 'redux';
 
@@ -58,6 +58,7 @@ class QuestionInput extends Component {
      const objValues = Object.values(langDefaults)
      if (objValues.includes(this.refs.questionContentInputField.props.value)) {
        this.setState({options: {lineNumbers: true, mode: this.refs.languageDropDown.value}, code: langDefaults[this.refs.languageDropDown.value]})
+       this.props.changeQuestionAttributes({inputValue: this.props.inputValue, content: langDefaults[this.refs.languageDropDown.value]}) 
      }else {
        this.setState({options: {lineNumbers: true, mode: this.refs.languageDropDown.value}, code: this.refs.questionContentInputField.props.value})
      }
@@ -113,7 +114,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch){
-  return bindActionCreators({ addQuestionToQuiz, addAnswersToQuestion }, dispatch)
+  return bindActionCreators({ addQuestionToQuiz, addAnswersToQuestion, changeQuestionAttributes}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuestionInput);

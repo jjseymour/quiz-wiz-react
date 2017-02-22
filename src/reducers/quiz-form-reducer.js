@@ -24,6 +24,15 @@ export default function(state = null, action){
       return newState
     case 'POST_QUIZ':
       return action.payload.data
+    case 'CHANGE_QUESTION_ATTRIBUTES':
+      const newQuestionAttributes = state.questions_attributes.map((question) => {
+        if(question.inputValue != action.payload.inputValue) {
+           return question
+          } else { 
+            return action.payload
+          }
+        })
+      return {...state, questions_attributes: newQuestionAttributes} 
     default:
       return state
   }
