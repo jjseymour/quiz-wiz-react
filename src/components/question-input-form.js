@@ -21,9 +21,13 @@ import 'codemirror/mode/jsx/jsx'
 import 'codemirror/lib/codemirror.css'
 
 class QuestionInput extends Component {
-  constructor(){
-    super()
-    this.state = {options: {lineNumbers: true, mode: 'css'}, code: 'div {\n\tposition: relative;\n\tdisplay: block;\n}', possible_answers_attributes: []}
+  constructor(props){
+    super(props)
+    if (this.props.question.content) {
+      this.state = {options: {lineNumbers: true, mode: 'css'}, code: this.props.question.content, possible_answers_attributes: this.props.question.possible_answers_attributes}
+    }else{
+      this.state = {options: {lineNumbers: true, mode: 'css'}, code: 'div {\n\tposition: relative;\n\tdisplay: block;\n}', possible_answers_attributes: []}
+    }
     this.updateCode = this.updateCode.bind(this)
     this.handleDropDownChange = this.handleDropDownChange.bind(this)
   }

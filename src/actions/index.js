@@ -67,6 +67,12 @@ function createOneUser(data) {
   }
 }
 
+export function resetQuizForm() {
+  return {
+    type: 'RESET_QUIZ_FORM'
+  }
+}
+
 export function fetchQuiz(quizId){
   return (dispatch) => {
     axios.get(url + `quizzes/${quizId}`).then((

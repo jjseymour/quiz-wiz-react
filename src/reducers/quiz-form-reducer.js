@@ -33,6 +33,8 @@ export default function(state = null, action){
           }
         })
       return {...state, questions_attributes: newQuestionAttributes} 
+    case 'RESET_QUIZ_FORM':
+      return {questions_attributes: []} 
     default:
       return state
   }
