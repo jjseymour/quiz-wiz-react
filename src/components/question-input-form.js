@@ -21,11 +21,11 @@ import 'codemirror/mode/jsx/jsx'
 import 'codemirror/lib/codemirror.css'
 
 class QuestionInput extends Component {
-  constructor(props){
+  constructor(props) {
     super(props)
     if (this.props.question.content) {
-      this.state = {options: {lineNumbers: true, mode: 'css'}, code: this.props.question.content, possible_answers_attributes: this.props.question.possible_answers_attributes}
-    }else{
+      this.state = {options: {lineNumbers: true, mode: this.props.question.code_mirror_language}, code: this.props.question.content, possible_answers_attributes: this.props.question.possible_answers_attributes, code_mirror_language: this.props.question.code_mirror_language}
+    }else {
       this.state = {options: {lineNumbers: true, mode: 'css'}, code: 'div {\n\tposition: relative;\n\tdisplay: block;\n}', possible_answers_attributes: []}
     }
     this.updateCode = this.updateCode.bind(this)
@@ -33,7 +33,7 @@ class QuestionInput extends Component {
   }
 
    updateCode(newCode) {
-       let question = {id: this.refs.questionContentInputField.props.id, input: newCode}
+       let question = {id: this.refs.questionContentInputField.props.id, content: newCode, code_mirror_language: this.refs.languageDropDown.value}
        this.setState({options: {lineNumbers: true, mode: this.refs.languageDropDown.value}, code: newCode, possible_answers_attributes: this.props.possible_answers_attributes})
        this.props.addQuestionToQuiz(question)
    }
@@ -62,14 +62,14 @@ class QuestionInput extends Component {
      const objValues = Object.values(langDefaults)
      if (objValues.includes(this.refs.questionContentInputField.props.value)) {
        this.setState({options: {lineNumbers: true, mode: this.refs.languageDropDown.value}, code: langDefaults[this.refs.languageDropDown.value]})
-       this.props.changeQuestionAttributes({inputValue: this.props.inputValue, content: langDefaults[this.refs.languageDropDown.value]}) 
+       this.props.changeQuestionAttributes({inputValue: this.props.inputValue, code_mirror_language: this.refs.languageDropDown.value, content: langDefaults[this.refs.languageDropDown.value]}) 
      }else {
        this.setState({options: {lineNumbers: true, mode: this.refs.languageDropDown.value}, code: this.refs.questionContentInputField.props.value})
      }
    }
 
   render() {
-    return(
+    return (
       <div>
         <h3>
           Question {this.props.id + 1}:
@@ -89,9 +89,8 @@ class QuestionInput extends Component {
           </select>
           <div style={{textAlign: 'left'}}>
             <CodeMirror id={this.props.id} value={this.state.code} autoFocus={true} ref="questionContentInputField" onChange={this.updateCode} options={this.state.options}  />
-
            {this.props.possible_answers_attributes.map((answer, index) => {
-             return (<AnswerInput key={index} inputValue={answer.inputValue} id={index} questionId={this.props.id} ref="answers" />)
+             return (<AnswerInput key={index} inputValue={answer.inputValue} id={index} answer={answer} questionId={this.props.id} ref="answers" />)
               })
             }
           </div>
@@ -117,8 +116,8 @@ function mapStateToProps(state, ownProps) {
   }
 }
 
-function mapDispatchToProps(dispatch){
-  return bindActionCreators({ addQuestionToQuiz, addAnswersToQuestion, changeQuestionAttributes}, dispatch)
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({addQuestionToQuiz, addAnswersToQuestion, changeQuestionAttributes}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuestionInput);

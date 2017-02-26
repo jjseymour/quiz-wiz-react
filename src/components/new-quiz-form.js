@@ -19,7 +19,7 @@ class NewQuizForm extends Component  {
   appendQuestionInput(e) {
     e.preventDefault();
     e.stopPropagation()
-    const newQuestionInput = {inputValue: `input-${this.props.quizForm.questions_attributes.length}`, content: 'div {\n\tposition: relative;\n\tdisplay: block;\n}'};
+    const newQuestionInput = {inputValue: `input-${this.props.quizForm.questions_attributes.length}`, content: 'div {\n\tposition: relative;\n\tdisplay: block;\n}', code_mirror_language: 'css'};
     this.props.actions.setQuiz({ title: this.refs.titleInputField.value, description: this.refs.descriptionInputField.value, questions_attributes: this.props.quizForm.questions_attributes.concat([newQuestionInput])});
   }
 
