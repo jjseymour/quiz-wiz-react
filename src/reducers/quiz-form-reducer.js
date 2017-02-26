@@ -3,17 +3,22 @@ export default function(state = null, action){
     case 'SET_QUIZ':
       return action.payload
     case 'ADD_QUESTION':
-      const questionObject = state.questions_attributes[parseInt(action.payload.id)]
-      const questionInput = action.payload.input
-      questionObject.content = questionInput
-      return state
+      const questionObject = state.questions_attributes.map((question) => {
+        if (question.inputValue !== `input-${action.payload.id}`) {
+          return question
+        }else {
+          return {...question, content: action.payload.content, code_mirror_language: action.payload.code_mirror_language}
+        }
+      })
+      return {...state, questions_attributes: questionObject}
     case 'ADD_ANSWER':
       const question = state.questions_attributes[action.payload.questionId]
       const questionArr = state.questions_attributes.filter(question=>question.id === action.payload.questionId)
       const answerObject = {...question.possible_answers_attributes[parseInt(action.payload.id)]}
       const answerArray = question.possible_answers_attributes.filter(answer => answer.id === parseInt(action.payload.id))
       answerObject[action.payload.answer_type] = action.payload[action.payload.answer_type]
-      if (answerObject.content) answerObject.content = action.payload.content
+      if (action.payload.content) answerObject.content = action.payload.content
+      if (action.payload.code_mirror_language) answerObject.code_mirror_language = action.payload.code_mirror_language
       answerObject.answer_type = action.payload.answer_type
       let rebuiltQuestion = {...question, possible_answers_attributes: [...answerArray, answerObject]}
       let rebuiltQuestionArray = [...questionArr, rebuiltQuestion]

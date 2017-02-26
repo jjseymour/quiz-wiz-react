@@ -19,9 +19,13 @@ import 'codemirror/mode/jsx/jsx'
 import 'codemirror/lib/codemirror.css'
 
 class NewAnswerForm extends Component {
-  constructor(){
-    super()
-    this.state = {options: {lineNumbers: true, mode: 'css'}, code: 'div {\n\tposition: relative;\n\tdisplay: block;\n}', content: 'option1', answer_type: "short_answer"}
+  constructor(props) {
+    super(props)
+    if (Object.keys(this.props.answer).length > 2) {
+      this.state = {...this.props.answer, options: {lineNumbers: true, mode: this.props.answer_type}, content: this.props.answer.content}
+    }else {
+      this.state = {options: {lineNumbers: true, mode: 'css'}, code: 'div {\n\tposition: relative;\n\tdisplay: block;\n}', content: 'option1', answer_type: "short_answer"}
+    }
     this.updateAnswers = this.updateAnswers.bind(this)
     this.handleDropDownChange = this.handleDropDownChange.bind(this)
     this.handleCodeMirrorDropDownChange = this.handleCodeMirrorDropDownChange.bind(this)
@@ -47,9 +51,8 @@ class NewAnswerForm extends Component {
     } else if (this.state.answer_type === "multiple_choice_long") {
       answer = {questionId: this.props.questionId, answer_type: this.state.answer_type, content: this.state.content, id: this.refs.answerContentInputField.props.id, multiple_choice_long: newCode}
     } else if (this.state.answer_type === "code") {
-      answer = {questionId: this.props.questionId, answer_type: this.state.answer_type, id: this.refs.answerCodeMirrorContentInputField.props.id, code: newCode}
+      answer = {questionId: this.props.questionId, answer_type: this.state.answer_type, id: this.refs.answerCodeMirrorContentInputField.props.id, code: newCode, code_mirror_language: this.state.options.mode}
     }
-
     this.props.addAnswerToQuiz(answer)
     this.setState({code: newCode})
   }
@@ -84,7 +87,7 @@ class NewAnswerForm extends Component {
      if (objValues.includes(this.refs.answerCodeMirrorContentInputField.props.value)) {
        this.setState({options: {lineNumbers: true, mode: this.refs.languageDropDown.value}, code: langDefaults[this.refs.languageDropDown.value]})
      } else {
-       this.setState({options: {lineNumbers: true, mode: this.refs.languageDropDown.value}, code: this.refs.questionContentInputField.props.value})
+       this.setState({options: {lineNumbers: true, mode: this.refs.languageDropDown.value}, code: this.refs.answerCodeMirrorContentInputField.props.value})
      }
    }
 
