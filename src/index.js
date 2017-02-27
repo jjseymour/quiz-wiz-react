@@ -18,7 +18,7 @@ const store = createStore(rootReducer, /* preloadedState, */ composeEnhancers(
 // const createStoreWithMiddleware = applyMiddleware(ReduxThunk)(createStore);
 // const store = createStoreWithMiddleware(rootReducer)
 
-store.dispatch(fetchQuizzes())
+// store.dispatch(fetchQuizzes())
 // store holds the functions that can access state
 ReactDOM.render(
   <Provider store={store}>
