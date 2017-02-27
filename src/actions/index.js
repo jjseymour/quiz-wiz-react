@@ -3,6 +3,10 @@ import {browserHistory} from 'react-router';
 
 export const url = 'http://localhost:3000/';
 
+const getUserToken = () => {
+  return axios.defaults.headers.common['Authorization'] = sessionStorage.getItem('jwt')
+}
+
 function getAllQuizzes(data){
   return {
     type: 'FETCH_QUIZZES',
@@ -54,6 +58,8 @@ function fetchOneCohort(data) {
 }
 
 function createOneUserSession(data) {
+  sessionStorage.setItem('jwt', data.data.jwt)
+  browserHistory.push(`/quizzes`)
   return {
     type: 'CREATE_USER_SESSION',
     payload: data
@@ -61,8 +67,17 @@ function createOneUserSession(data) {
 }
 
 function createOneUser(data) {
+  sessionStorage.setItem('jwt', data.data.jwt)
+  browserHistory.push(`/quizzes`)
   return {
     type: 'CREATE_USER',
+    payload: data
+  }
+}
+
+function fetchedCurrentUser(data) {
+  return {
+    type: 'FETCH_CURRENT_USER',
     payload: data
   }
 }
@@ -174,8 +189,20 @@ export function createUser(user){
   }
 }
 
+export function fetchCurrentUser(){
+  getUserToken()
+  return (dispatch) => {
+    axios.get(url + `users/${sessionStorage.getItem('jwt')}`).then((
+      data => dispatch(fetchedCurrentUser(data)),
+      error => dispatch(fetchedCurrentUser(error))
+    ))
+  }
+}
+
 export function destroySession(e){
-  e.preventDefault()
+    e.preventDefault()
+    sessionStorage.removeItem('jwt');
+    browserHistory.push('/login');
     return {
       type: 'DESTROY_SESSION'
     }

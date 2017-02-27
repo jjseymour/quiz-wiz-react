@@ -11,6 +11,7 @@ import UserLogin from './components/user-login';
 import UserSignUp from './components/user-signup';
 import EndQuiz from './components/end-quiz';
 import auth from './auth/authenticator';
+import isInstructor from './helpers/newQuizPermissionHandle';
 
 export default (
   <Route path="/" component={App}>
@@ -18,8 +19,8 @@ export default (
     <Route path="signup" component={UserSignUp}/>
     <Route path="quizzes" onEnter={requireAuth}>
       <IndexRoute component={QuizIndex} />
-      <Route path="new">
-        <IndexRoute component={NewQuizForm} />
+      <Route path="new" >
+        <IndexRoute component={isInstructor(NewQuizForm)} />
       </Route>
       <Route path=":id" component={QuizShow} />
       <Route path=":id/questions/finish" component={EndQuiz} />
@@ -27,7 +28,7 @@ export default (
     </Route>
     <Route path="cohorts" onEnter={requireAuth}>
       <IndexRoute component={CohortIndex} />
-      <Route path=":id" component={CohortShow} />
+      <Route path=":id" component={isInstructor(CohortShow)} />
     </Route>
   </Route>
 )
@@ -40,3 +41,4 @@ function requireAuth(nextState, replace) {
     })
   }
 }
+

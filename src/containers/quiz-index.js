@@ -1,8 +1,14 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router';
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { Link } from 'react-router'
+import { bindActionCreators } from 'redux'
+import { fetchQuizzes } from '../actions/index'
 
 class QuizIndex extends Component  {
+  componentDidMount() {
+    this.props.fetchQuizzes()
+  }
+
   render(){
     return (
       <div>
@@ -17,6 +23,9 @@ class QuizIndex extends Component  {
 
 }
 
+function mapDispatchToProps(dispatch){
+  return bindActionCreators({ fetchQuizzes }, dispatch)
+}
 function mapStateToProps(state){
   if (!!state.quizzes) {
     return {
@@ -29,4 +38,4 @@ function mapStateToProps(state){
   }
 }
 
-export default connect(mapStateToProps)(QuizIndex);
+export default connect(mapStateToProps, mapDispatchToProps)(QuizIndex);
