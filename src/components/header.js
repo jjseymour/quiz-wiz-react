@@ -6,6 +6,7 @@ import Auth from '../auth/authenticator';
 import { destroySession, fetchCurrentUser } from '../actions/index';
 
 class Header extends Component {
+  //move to configStore
   componentWillMount() {
     if (Auth.loggedIn()) {
       this.state = {

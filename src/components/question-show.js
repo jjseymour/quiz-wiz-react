@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { addAnswer } from '../actions/index'
+import { addAnswer, fetchStudentQuiz } from '../actions/index'
 
 import { browserHistory } from 'react-router';
 
@@ -26,6 +26,10 @@ class QuestionShow extends Component {
     this.handleAnswer = this.handleAnswer.bind(this)
   }
 
+  componentWillMount(){
+    this.props.fetchStudentQuiz(this.props.quizId)
+  }
+
   handleAnswer(e){
     e.preventDefault()
     const quiz = this.props.quiz
@@ -43,7 +47,7 @@ class QuestionShow extends Component {
     return(
       <div>
         <div style={{textAlign: 'left'}}>
-          <CodeMirror value={this.props.question.content} autoFocus={true} options={{lineNumbers: true, mode:'ruby', readOnly: true}} />
+          <CodeMirror value={this.props.question.content} autoFocus={true} options={{lineNumbers: true, mode: this.props.question.code_mirror_language, readOnly: true}} />
         </div>
         <form onSubmit={this.handleAnswer}>
           {/* <textArea refs="userAnswer" /> */}
@@ -56,31 +60,25 @@ class QuestionShow extends Component {
 }
 
 function mapStateToProps(state, ownProps){
-  if (state.quizzes) {
-    const quiz = state.quizzes.find((quiz) => quiz.id === parseInt(ownProps.params.id[0]))
-    if (quiz) {
-      const question = quiz.questions.find((question) => question.id === parseInt(ownProps.params.id[1]))
-      return {
-        quiz: quiz,
-        question: question,
-        studentQuiz: state.studentQuiz
-      }
-    } else {
-      return {
-        quiz: quiz,
-        question: "pending",
-        studentQuiz: state.studentQuiz
-      }
-    }
-  } else {
+  if (state.studentQuiz) {
+    let question =  state.studentQuiz.quiz.questions.find(question => question.id === parseInt(ownProps.params.id[1]))
     return {
-      question: ''
+      quiz: state.studentQuiz.quiz,
+      question: question,
+      studentQuiz: state.studentQuiz
+    }
+  }else {
+    return {
+      quiz: {},
+      question: {content: 'Loading...', code_mirror_language: 'markdown'},
+      studentQuiz: {},
+      quizId: ownProps.params.id[0],
     }
   }
 }
 
 function mapDispatchToProps(dispatch){
-  return bindActionCreators({addAnswer}, dispatch)
+  return bindActionCreators({ addAnswer, fetchStudentQuiz }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuestionShow)

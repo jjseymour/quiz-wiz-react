@@ -21,10 +21,17 @@ function getOneQuiz(data) {
   }
 }
 
-function startStudentQuiz(data) {
+function startStudentQuiz(data, redirectUrl) {
+  browserHistory.push(redirectUrl)
   return{
     type: 'START_QUIZ',
     payload: data
+  }
+}
+
+function clearStudentQuiz() {
+  return{
+    type: 'CLEAR_STUDENT_QUIZ'
   }
 }
 
@@ -78,6 +85,13 @@ function createOneUser(data) {
 function fetchedCurrentUser(data) {
   return {
     type: 'FETCH_CURRENT_USER',
+    payload: data
+  }
+}
+
+function fetchedStudentQuiz(data) {
+  return {
+    type: 'FETCH_STUDENT_QUIZ',
     payload: data
   }
 }
@@ -218,10 +232,22 @@ export function addAnswer(userAnswer, quizId, studentQuizId, questionId){
 }
 
 export function startQuiz(quizId, redirectUrl){
+  const redirectUrl2 = redirectUrl
   return (dispatch) => {
+    dispatch(clearStudentQuiz())
     axios.post(url + 'student_quizzes', {quiz_id: quizId, jwt: sessionStorage.jwt}).then((
-      data => dispatch(startStudentQuiz(data)),
-      error => dispatch(startStudentQuiz(error))
+      data => dispatch(startStudentQuiz(data, redirectUrl2)),
+      error => dispatch(startStudentQuiz(error, redirectUrl2))
+    ))
+  }
+}
+
+export function fetchStudentQuiz(quizId){
+  getUserToken()
+  return (dispatch) => {
+    axios.get(url + `student_quizzes/?quizId=${quizId}`).then((
+      data => dispatch(fetchedStudentQuiz(data)),
+      error => dispatch(fetchedStudentQuiz(error))
     ))
   }
 }

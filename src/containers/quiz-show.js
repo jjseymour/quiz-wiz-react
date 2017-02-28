@@ -29,8 +29,8 @@ class QuizShow extends Component {
   handleStartQuiz(e){
     e.preventDefault()
     this.props.startQuiz(this.props.quizShow.id, this.refs.startQuiz.value)
-    browserHistory.push(this.refs.startQuiz.value)
   }
+
   render() {
     if (!this.props.quizShow) {
       return <div>Loading...</div>
