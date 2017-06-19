@@ -1,7 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { fetchStudentQuiz } from '../actions/index';
 
 class EndQuiz extends Component {
+  componentWillMount() {
+    this.props.fetchStudentQuiz(this.props.quizId)
+  }
 
   handleStudentAnswerShow(){
     if (this.props.studentAnswers){
@@ -25,12 +30,23 @@ class EndQuiz extends Component {
 }
 
 function mapStateToProps(state, myProps) {
- let quiz = state.quizzes.find((indivQuiz) => state.studentQuiz.quiz_id === indivQuiz.id)
- let studentAnswers = state.studentQuiz.studentAnswers
+ if (state.studentQuiz) {
+   let studentAnswers = state.studentQuiz.studentAnswers
+    return {
+      quiz: state.studentQuiz,
+      studentAnswers
+    }
+ }else {
   return {
-    quiz,
-    studentAnswers
+    quiz: state.studentQuiz,
+    studentAnswers: [],
+    quizId: myProps.params.id
   }
+ }
 }
 
-export default connect(mapStateToProps)(EndQuiz)
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({ fetchStudentQuiz }, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(EndQuiz)

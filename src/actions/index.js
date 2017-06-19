@@ -232,12 +232,11 @@ export function addAnswer(userAnswer, quizId, studentQuizId, questionId){
 }
 
 export function startQuiz(quizId, redirectUrl){
-  const redirectUrl2 = redirectUrl
   return (dispatch) => {
     dispatch(clearStudentQuiz())
     axios.post(url + 'student_quizzes', {quiz_id: quizId, jwt: sessionStorage.jwt}).then((
-      data => dispatch(startStudentQuiz(data, redirectUrl2)),
-      error => dispatch(startStudentQuiz(error, redirectUrl2))
+      data => dispatch(startStudentQuiz(data, redirectUrl)),
+      error => dispatch(startStudentQuiz(error, redirectUrl))
     ))
   }
 }
