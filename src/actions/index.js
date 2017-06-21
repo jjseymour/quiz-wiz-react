@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {browserHistory} from 'react-router';
 
-export const url = 'http://localhost:3000/';
+export const url = ENV['URL'] || 'http://localhost:3000/';
 
 const getUserToken = () => {
   return axios.defaults.headers.common['Authorization'] = sessionStorage.getItem('jwt')
