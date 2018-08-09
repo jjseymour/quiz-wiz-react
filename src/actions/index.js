@@ -232,3 +232,19 @@ export function changeQuestionAttributes(payload){
     payload: payload
   }
 }
+
+export function fetchStudentAnswers(quizId){
+    return (dispatch) => {
+        axios.post(url + 'student_answers', {quiz_id: quizId, jwt: sessionStorage.jwt}).then((
+            data => dispatch(studentAnswers(data)),
+            error => dispatch(studentAnswers(error))
+        ))
+    }
+}
+
+export function studentAnswers(payload){
+    return {
+        type: 'STUDENT_ANSWERS',
+        payload: payload
+    }
+}
