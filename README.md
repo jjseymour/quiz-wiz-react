@@ -20,6 +20,23 @@ Welcome to the quiz-wiz-react app!
     npm start
     ```
 
+# Login as an instructor
+
+With the [API](https://github.com/jjseymour/quiz-tracker-api) up and running and in that repo directory:
+  - `rails c`
+  - `User.find_by(instructor: true)`
+  - Use that instructor's email and the password `12345` to login
+
+# Login as a student within the above instructor's cohort
+
+With the [API](https://github.com/jjseymour/quiz-tracker-api) up and running and in that repo directory:
+  - `rails c`
+  - `instructor = User.find_by(instructor: true)`
+  - `cohort = instructor.cohorts.first`
+  - `cohort.students.first`
+  - Use that student's email and the password `12345` to login
+
+
 # git workflow
 
 This repo uses the forked model, where each person works on their own version of the repo.
